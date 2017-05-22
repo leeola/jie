@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strings"
 
 	"github.com/leeola/fixity/util/clijson"
 	"github.com/urfave/cli"
@@ -16,6 +17,10 @@ func GetCmd(ctx *cli.Context) error {
 	urlStr := ctx.Args().First()
 	if urlStr == "" {
 		return errors.New("missing url argument")
+	}
+
+	if !strings.HasPrefix(strings.ToLower(urlStr), "http") {
+		urlStr = "http://" + urlStr
 	}
 
 	u, err := url.Parse(urlStr)

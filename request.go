@@ -23,7 +23,7 @@ func PrintRequest(out io.Writer, r *http.Request) error {
 	c := color.New()
 	c.Add(color.FgHiMagenta)
 	c.Fprint(out, r.Method, " ")
-	c.Add(color.FgCyan)
+	c.Add(color.FgHiCyan)
 	c.Fprint(out, urlStr, " ")
 	c.Add(color.FgHiMagenta)
 	c.Fprintln(out, r.Proto)

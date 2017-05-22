@@ -17,9 +17,14 @@ func main() {
 		{
 			Name:      "get",
 			ArgsUsage: "ADDR",
-			Aliases:   []string{"g"},
-			Usage:     "get request",
+			Usage:     "perform a GET request",
 			Action:    GetCmd,
+		},
+		{
+			Name:      "post",
+			ArgsUsage: "ADDR",
+			Usage:     "perform a POST request",
+			Action:    PostCmd,
 		},
 	}
 
