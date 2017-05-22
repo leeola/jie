@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 
 	"github.com/fatih/color"
@@ -32,6 +34,22 @@ func PrintRequest(out io.Writer, r *http.Request) error {
 
 	if r.Method == "GET" && r.URL.RawQuery != "" {
 		fmt.Fprintf(out, "\n?%s", r.URL.RawQuery)
+	}
+
+	if r.Body != nil {
+		fmt.Println()
+
+		defer r.Body.Close()
+		b, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			return err
+		}
+
+		if err := PrintJson(out, b); err != nil {
+			return err
+		}
+
+		r.Body = ioutil.NopCloser(bytes.NewReader(b))
 	}
 
 	fmt.Println()
