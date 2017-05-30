@@ -26,6 +26,12 @@ func main() {
 			Usage:     "perform a POST request",
 			Action:    PostCmd,
 		},
+		{
+			Name:      "put",
+			ArgsUsage: "ADDR",
+			Usage:     "perform a PUT request",
+			Action:    PutCmd,
+		},
 	}
 
 	if err := app.Run(os.Args); err != nil {
