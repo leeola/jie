@@ -11,15 +11,12 @@ import (
 )
 
 func PrintRequest(out io.Writer, r *http.Request) error {
-	var urlStr string
+	urlStr := r.URL.Path
 	// if the method is GET, we're going to print the querystring as the body,
 	// so remove it from this url.
-	if r.Method == "GET" {
-		u := *r.URL
-		u.RawQuery = ""
-		urlStr = u.String()
+	if r.Method != "GET" {
 	} else {
-		urlStr = r.URL.String()
+		urlStr = urlStr + r.URL.RawQuery
 	}
 
 	c := color.New()
