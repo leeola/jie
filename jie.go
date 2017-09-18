@@ -12,6 +12,12 @@ func main() {
 	app.Name = "jie"
 	app.Usage = "a human friend json http client"
 	app.Action = GetCmd
+	app.Flags = []cli.Flag{
+		cli.BoolFlag{
+			Name:  "pipe-response, p",
+			Usage: "do not print the input and do not print colors",
+		},
+	}
 
 	app.Commands = []cli.Command{
 		{

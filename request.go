@@ -6,9 +6,55 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"os"
 
 	"github.com/fatih/color"
 )
+
+type Config struct {
+	PipeResponse bool
+	Method       string
+	URL          string
+	Body         io.Reader
+	Writer       io.Writer
+}
+
+func Request(c Config) error {
+	req, err := http.NewRequest(c.Method, c.URL, nil)
+	if err != nil {
+		return err
+	}
+
+	// TODO(leeola): add user supplied headers here
+	//
+	// defaulting to json
+	req.Header.Add("Accept", "application/json")
+
+	if !c.PipeResponse {
+		if err := PrintRequest(os.Stdout, req); err != nil {
+			return err
+		}
+		fmt.Println()
+	}
+
+	res, err := (&http.Client{}).Do(req)
+	if err != nil {
+		return err
+	}
+	defer res.Body.Close()
+
+	if !c.PipeResponse {
+		if err := PrintResponse(c.Writer, res); err != nil {
+			return err
+		}
+	} else {
+		if err := PrintResponseBody(c.Writer, res); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
 
 func PrintRequest(out io.Writer, r *http.Request) error {
 	urlStr := r.URL.Path

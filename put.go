@@ -3,8 +3,6 @@ package main
 import (
 	"bytes"
 	"errors"
-	"fmt"
-	"net/http"
 	"net/url"
 	"os"
 	"strings"
@@ -34,26 +32,12 @@ func PutCmd(ctx *cli.Context) error {
 		return err
 	}
 
-	req, err := http.NewRequest("PUT", u.String(), bytes.NewReader(jsonB))
-	if err != nil {
-		return err
+	reqConf := Config{
+		PipeResponse: ctx.GlobalBool("pipe-response"),
+		Method:       "GET",
+		URL:          u.String(),
+		Body:         bytes.NewReader(jsonB),
+		Writer:       os.Stdout,
 	}
-
-	// TODO(leeola): add user supplied headers here
-	//
-	// defaulting to json
-	req.Header.Add("Accept", "application/json")
-
-	if err := PrintRequest(os.Stdout, req); err != nil {
-		return err
-	}
-	fmt.Println()
-
-	res, err := (&http.Client{}).Do(req)
-	if err != nil {
-		return err
-	}
-	defer res.Body.Close()
-
-	return PrintResponse(os.Stdout, res)
+	return Request(reqConf)
 }

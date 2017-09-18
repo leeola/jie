@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -25,6 +27,29 @@ func PrintResponse(out io.Writer, r *http.Response) error {
 	}
 
 	if err := PrintJson(out, b); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func PrintResponseBody(out io.Writer, r *http.Response) error {
+	if r.Body == nil {
+		return nil
+	}
+
+	defer r.Body.Close()
+	bodyB, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		return err
+	}
+
+	var outB bytes.Buffer
+	if err := json.Indent(&outB, bodyB, "", "  "); err != nil {
+		return err
+	}
+
+	if _, err := io.Copy(out, &outB); err != nil {
 		return err
 	}
 
