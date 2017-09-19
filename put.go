@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"errors"
+	"io"
 	"net/url"
 	"os"
 	"strings"
@@ -26,17 +27,23 @@ func PutCmd(ctx *cli.Context) error {
 		return err
 	}
 
-	jsonArgs := ctx.Args().Tail()
-	jsonB, err := clijson.CliJson(jsonArgs)
-	if err != nil {
-		return err
+	var r io.Reader
+	if !ctx.GlobalBool("stdin") {
+		jsonArgs := ctx.Args().Tail()
+		jsonB, err := clijson.CliJson(jsonArgs)
+		if err != nil {
+			return err
+		}
+		r = bytes.NewReader(jsonB)
+	} else {
+		r = os.Stdin
 	}
 
 	reqConf := Config{
-		PipeResponse: ctx.GlobalBool("pipe-response"),
-		Method:       "GET",
+		PipeResponse: ctx.GlobalBool("stdout"),
+		Method:       "PUT",
 		URL:          u.String(),
-		Body:         bytes.NewReader(jsonB),
+		Body:         r,
 		Writer:       os.Stdout,
 	}
 	return Request(reqConf)

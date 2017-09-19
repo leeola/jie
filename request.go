@@ -20,7 +20,7 @@ type Config struct {
 }
 
 func Request(c Config) error {
-	req, err := http.NewRequest(c.Method, c.URL, nil)
+	req, err := http.NewRequest(c.Method, c.URL, c.Body)
 	if err != nil {
 		return err
 	}

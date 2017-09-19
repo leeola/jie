@@ -34,7 +34,7 @@ func PostCmd(ctx *cli.Context) error {
 	}
 
 	reqConf := Config{
-		PipeResponse: ctx.GlobalBool("pipe-response"),
+		PipeResponse: ctx.GlobalBool("pipe-out"),
 		Method:       "GET",
 		URL:          u.String(),
 		Body:         bytes.NewReader(jsonB),

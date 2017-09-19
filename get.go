@@ -57,8 +57,10 @@ func GetCmd(ctx *cli.Context) error {
 		u.RawQuery = q.Encode()
 	}
 
+	// TODO(leeola): change this to print to stdout and stderr based on
+	// existence of --stdout
 	reqConf := Config{
-		PipeResponse: ctx.GlobalBool("pipe-response"),
+		PipeResponse: ctx.GlobalBool("stdout"),
 		Method:       "GET",
 		URL:          u.String(),
 		Writer:       os.Stdout,

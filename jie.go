@@ -14,8 +14,12 @@ func main() {
 	app.Action = GetCmd
 	app.Flags = []cli.Flag{
 		cli.BoolFlag{
-			Name:  "pipe-response, p",
-			Usage: "do not print the input and do not print colors",
+			Name:  "stdin",
+			Usage: "use stdin as the request body",
+		},
+		cli.BoolFlag{
+			Name:  "stdout",
+			Usage: "send response body to stdout",
 		},
 	}
 
