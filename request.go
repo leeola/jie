@@ -6,7 +6,6 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
-	"os"
 
 	"github.com/fatih/color"
 )
@@ -31,7 +30,7 @@ func Request(c Config) error {
 	req.Header.Add("Accept", "application/json")
 
 	if !c.PipeResponse {
-		if err := PrintRequest(os.Stdout, req); err != nil {
+		if err := PrintRequest(c.Writer, req); err != nil {
 			return err
 		}
 		fmt.Println()
