@@ -61,7 +61,7 @@ func PrintRequest(out io.Writer, r *http.Request) error {
 	// so remove it from this url.
 	if r.Method != "GET" {
 	} else {
-		urlStr = urlStr + r.URL.RawQuery
+		urlStr = fmt.Sprintf("%s?%s", urlStr, r.URL.RawQuery)
 	}
 
 	c := color.New()
