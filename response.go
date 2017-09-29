@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -46,7 +47,7 @@ func PrintResponseBody(out io.Writer, r *http.Response) error {
 
 	var outB bytes.Buffer
 	if err := json.Indent(&outB, bodyB, "", "  "); err != nil {
-		return err
+		return fmt.Errorf("invalid response json: %s", err)
 	}
 
 	if _, err := io.Copy(out, &outB); err != nil {

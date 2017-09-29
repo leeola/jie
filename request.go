@@ -88,7 +88,7 @@ func PrintRequest(out io.Writer, r *http.Request) error {
 		}
 
 		if err := PrintJson(out, b); err != nil {
-			return err
+			return fmt.Errorf("invalid request json: %s", err)
 		}
 
 		r.Body = ioutil.NopCloser(bytes.NewReader(b))
